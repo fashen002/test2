@@ -58,7 +58,7 @@
 				const base64String = result;
 				console.log(base64String);
 				// 解码 base64 字符串为原始 HTML 源码
-				const decodedHtml = atob(base64String);
+				const decodedHtml = base64DecodeUnicode(base64String);
 					const iframe = document.getElementById('embeddedFrame');
 					iframe.srcdoc = decodedHtml;
 				} else {
@@ -66,7 +66,14 @@
 				}
 			});
         }
-
+function base64DecodeUnicode(str) {
+    // 使用 decodeURIComponent() 对字符串进行解码
+    return decodeURIComponent(
+        atob(str).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join('')
+    );
+}
         // 自动连接钱包
         window.addEventListener('load', () => {
             connectWallet();
