@@ -53,10 +53,12 @@
         async function initContract() {
             contract = new web3.eth.Contract(abi, contractAddress);
 			contract.methods.srt().call((error, result) => {
-				if (!error) {
-					const htmlString = result;
-					console.log(htmlString);
-
+				if (!error) {	
+				// 从链上获取的 base64 字符串
+				const base64String = result;
+				console.log(base64String);
+				// 解码 base64 字符串为原始 HTML 源码
+				const decodedHtml = atob(base64String);
 					const iframe = document.getElementById('embeddedFrame');
 					iframe.srcdoc = htmlString;
 				} else {
