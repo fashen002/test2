@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>显示从链上获取的HTML内容</title>
+</head>
+<body>
+    <h1>显示从链上获取的HTML内容</h1>
+
+    <iframe id="embeddedFrame" width="100%" height="600" frameborder="0"></iframe>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+    <script>
+	    let web3 ;
+        let contract ;
+        const contractAddress = '0xc0Ad0a61e76b8d7fB8bC3bF6a98974567A30eD46';
+        const contractAbi = [
+            {
+                "inputs": [],
+                "name": "srt",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+
+
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await window.ethereum.enable();
+                    web3 = new Web3(window.ethereum);
+                    const accounts = await web3.eth.getAccounts();
+                    walletAddress = accounts[0];
+                   await initContract();
+                } catch (error) {
+                    console.error('Failed to connect wallet:', error);
+                }
+            } else {
+                alert('Please install MetaMask to use this website.');
+            }
+        }
+
+        async function initContract() {
+            contract = new web3.eth.Contract(abi, contractAddress);
+			contract.methods.srt().call((error, result) => {
+				if (!error) {
+					const htmlString = result;
+					console.log(htmlString);
+
+					const iframe = document.getElementById('embeddedFrame');
+					iframe.srcdoc = htmlString;
+				} else {
+					console.error(error);
+				}
+			});
+        }
+
+        // 自动连接钱包
+        window.addEventListener('load', () => {
+            connectWallet();
+        });
+    </script>
+</body>
+</html>
