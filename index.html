@@ -51,7 +51,7 @@
         }
 
         async function initContract() {
-            contract = new web3.eth.Contract(abi, contractAddress);
+            contract = new web3.eth.Contract(contractAbi, contractAddress);
 			contract.methods.srt().call((error, result) => {
 				if (!error) {	
 				// 从链上获取的 base64 字符串
