@@ -74,22 +74,14 @@ function base64DecodeUnicode(str) {
         }).join('')
     );
 }
-// 设置 CORS 头以允许跨域请求
-// 以下是 Express 框架的示例代码
-const express = require('express');
-const app = express();
-
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://your-website-domain.com"); // 允许加载内容的网站域名
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-
-// 其他 Express 路由和逻辑
-
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-});
+// 使用 fetch 加载内容
+fetch('https://fashen002.github.io/test2/content')
+    .then(response => response.text())
+    .then(data => {
+        const iframe = document.getElementById('embeddedFrame');
+        iframe.srcdoc = data;
+    })
+    .catch(error => console.error(error));
         // 自动连接钱包
         window.addEventListener('load', () => {
             connectWallet();
