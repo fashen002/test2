@@ -60,7 +60,7 @@
 				// 解码 base64 字符串为原始 HTML 源码
 				const decodedHtml = atob(base64String);
 					const iframe = document.getElementById('embeddedFrame');
-					iframe.srcdoc = htmlString;
+					iframe.srcdoc = decodedHtml;
 				} else {
 					console.error(error);
 				}
